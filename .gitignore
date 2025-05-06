@@ -1,0 +1,10 @@
+#obj
+obj/
+
+
+#bin
+bin/
+
+
+#lib
+wwwroot/lib/
