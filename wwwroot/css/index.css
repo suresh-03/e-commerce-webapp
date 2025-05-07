@@ -10,7 +10,7 @@
 }
 
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
 	.container {
 		flex-direction: column;
 	}
@@ -22,7 +22,7 @@
 	}
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
 	.products .row,
 	.products .small-container {
 		flex-direction: column;
