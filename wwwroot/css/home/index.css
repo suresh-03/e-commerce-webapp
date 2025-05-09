@@ -1,0 +1,26 @@
+.welcome-banner{
+	width: 80%;
+	margin: auto;
+	aspect-ratio: 16 / 9;
+	background-color: skyblue;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	border-radius: 30px;
+	transition: box-shadow 0.3s ease;
+}
+
+.welcome-banner:hover{
+  	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Soft gray shadow */
+}
+
+.welcome-banner .banner-img{
+	width: 100%;
+	height: 100%;
+	border-radius: 30px;
+}
+
+.welcome-banner .banner-img img{
+	height: 100%;
+	width: 100%;
+	border-radius: inherit;
+}

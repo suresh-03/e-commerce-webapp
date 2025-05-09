@@ -1,0 +1,3 @@
+colors:
+	primary: #f16318 (orange)
+	secondary: #222 (darkgrey)
