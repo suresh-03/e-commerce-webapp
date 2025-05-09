@@ -204,8 +204,6 @@ a{
 
 footer{
 	display: flex;
-/*	position: fixed;*/
-/*	bottom: 0;*/
 	min-width: 100%;
 	align-items: stretch;
 	background-color: #222;
