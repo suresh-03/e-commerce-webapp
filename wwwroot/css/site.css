@@ -13,6 +13,14 @@ a{
 }
 
 /* ---------- HEADER STYLES ---------- */
+
+header{
+	position: sticky;
+	width: 100%;
+	top: 0;
+	background-color: white;
+}
+
 .nav-container{
 	display: flex;
 	max-width: 80%;
@@ -189,6 +197,10 @@ a{
 
 .overlay.active {
   display: block; /* Show when active */
+}
+
+.sidebar #menu-items a{
+	color: #222;
 }
 
 /* ---------- FOOTER STYLES ---------- */

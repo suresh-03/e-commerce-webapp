@@ -49,8 +49,13 @@
                 <a asp-controller="" asp-action=""><img src="~/images/fabstore.png" alt="Fabstore Logo"></a>
             </div>
             <h2>Categories</h2>
-            <ul id="menuItems">
-                 <!-- Menu items will be added dynamically -->
+            <ul id="menu-items">
+                 <li><a asp-controller="Product" asp-action="Index" asp-route-category="tshirts">T-Shirts</a></li>
+                 <li><a asp-controller="Product" asp-action="Index" asp-route-category="shirts">Shirts</a></li>
+                 <li><a asp-controller="Product" asp-action="Index" asp-route-category="pants">Pants</a></li>
+                 <li><a asp-controller="Product" asp-action="Index" asp-route-category="shoes">Shoes</a></li>
+                 <li><a asp-controller="Product" asp-action="Index" asp-route-category="watches">Watches</a></li>
+                 <li><a asp-controller="Product" asp-action="Index" asp-route-category="belts">Belts</a></li>
             </ul>
             <div class="close-btn" id="closeSidebar">×</div>
         </div>

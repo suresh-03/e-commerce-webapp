@@ -1,0 +1,132 @@
+@media (max-width:900px){
+	.product-details-container,
+	.product-details-inner-container{
+		flex-direction: column;
+	}
+}
+
+
+.product-details-container{
+	width: 80%;
+	height: 79.2vh;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.product-details-inner-container{
+	display: flex;
+	justify-content: center;
+	width: 80%;
+	height: 80%;
+	gap: 2rem;
+}
+
+.product-details-inner-container .product-image{
+	width: 35%;
+	height: 100%;
+}
+
+.product-details-inner-container .product-image img{
+	height: 100%;
+	width: 100%;
+}
+
+.product-details-inner-container .product-details-outer{
+	width: 65%;
+	height: 100%;
+}
+
+.product-details-outer h2{
+	margin-left: 2%;
+}
+
+.product-details-outer h3{
+	margin: 2%;
+	color: #797a98;
+}
+
+.product-details-outer .star-ratings{
+	margin-top: 3%;
+	margin-left: 2%;
+}
+
+.product-details-outer .product-price{
+	margin-top: 4%;
+	margin-left: 2%;
+	font-size: 30px;
+}
+
+.product-details-outer .tax-info{
+	margin: 2%;
+	color: #03a689;
+	font-size: small;
+}
+
+.product-details-outer .colors-info{
+	margin-left: 2%;
+	margin-top: 3%;
+	font-size: large;
+	font-weight: 600;
+	color: #ff527b;
+}
+
+.product-details-outer .color-outer{
+	height: 4rem;
+	width: 4rem;
+	border-radius: 4rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.product-details-outer .color-outer:hover{
+	border: 1px solid black;
+}
+
+.product-details-outer .color{
+	height: 3.5rem;
+	width: 3.5rem;
+	border-radius: 3.5rem;
+}
+
+.product-details-outer .color-1{
+	background-color: black;
+}
+
+.product-details-outer .color-2{
+	background-color: #222;
+}
+
+.product-details-outer .color-3{
+	background-color: #09062e;
+}
+
+.product-details-outer .product-colors{
+	display: flex;
+	margin-left: 2%;
+	margin-top: 3%;
+	gap: 1.5rem;
+}
+
+.product-details-outer .product-btns{
+	display: flex;
+	justify-content: center;
+	margin-top: 5rem;
+	gap: 2rem;
+}
+
+.product-details-outer .product-btns a{
+	display: flex;
+	gap: 2%;
+	justify-content: center;
+	align-items: center;
+	height: 4rem;
+	width: 50%;
+	border-radius: 1rem;
+	background-color: red;
+}
+
+
+

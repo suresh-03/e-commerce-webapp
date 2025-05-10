@@ -21,22 +21,6 @@ function closeSidebarOnOutsideClick(event) {
   }
 }
 
-// Dynamically populate sidebar menu
-function populateMenu() {
-  const menuItems = document.getElementById("menuItems");
-  const menuData = ["T-Shirts","Shoes","Pants","Shirts","Watches","Belts"];
-
-  menuData.forEach(item => {
-    const li = document.createElement("li");
-    const a = document.createElement("a");
-    a.href="#";
-    a.textContent = item;
-    a.style.color = "#222";
-    li.appendChild(a);
-    menuItems.appendChild(li);
-  });
-}
-
 // Function to initialize event listeners
 function initializeSidebar() {
   // Add event listener for the toggle button
@@ -70,6 +54,5 @@ function removeOverlay(){
 
 // Initialize everything
 initializeSidebar();
-populateMenu();
 
 

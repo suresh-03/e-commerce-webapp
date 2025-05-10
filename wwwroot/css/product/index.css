@@ -1,0 +1,107 @@
+/* -------------------------- PRODUCT CONTAINER STYLES ------------------------------- */
+
+.product-container{
+	width: 80%;
+	margin: auto;
+	margin-top: 80px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.product-container .product-inner-container{
+	width: 90%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	justify-content: center;
+	gap: 1.5rem;
+}
+
+/* --------------------------- PRODUCT STYLE ------------------------------------------ */
+
+@media(max-width:1300px){
+	.product-container .product-inner-container{
+		grid-template-columns: repeat(4, 1fr);
+		gap: 3rem;
+	}
+}
+
+@media(max-width:1200px){
+	.product-container .product-inner-container{
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media(max-width:700px){
+	.product-container .product-inner-container{
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media(max-width:450px){
+	.product-container .product-inner-container{
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
+
+.product-container .product-inner-container .product-grid{
+	max-height: 90%;
+	max-width: 13rem;
+	transition: box-shadow 0.3s ease;
+}
+
+.product-container .product-inner-container .product-grid:hover{
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.product-container .product-inner-container .product-grid a{
+	color: #222;
+}
+
+.product-container .product-inner-container .product-image{
+	width: 100%;
+	height: 75%;
+}
+
+.product-container .product-inner-container .product-information{
+	margin-left: 10px;
+}
+
+.product-container .product-inner-container .product-information p{
+  white-space: nowrap;       /* Prevents text from wrapping */
+  overflow: hidden;          /* Hides overflowed text */
+  text-overflow: ellipsis;   /* Adds "..." to indicate overflow */
+  width: 100%;
+  display: block;
+}
+
+.product-container .product-inner-container .product-information p,
+.product-container .product-inner-container .product-information .ratings
+{
+	font-size: small;
+}
+
+.product-container .product-inner-container .product-information .ratings{
+	display: flex;
+	gap: 1rem;
+}
+
+.product-information .ratings .rating{
+	padding-left: 4px;
+	padding-right: 4px;
+	border-radius: 3px;
+}
+
+.product-container .product-inner-container .product-information .product-price{
+	font-weight: bolder;
+}
+
+
+.product-container .product-inner-container .product-image img{
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+}
