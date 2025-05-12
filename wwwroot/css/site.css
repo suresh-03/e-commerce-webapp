@@ -132,12 +132,12 @@ header{
 /* ---------- SIDEBAR STYLES ---------- */
 
 .sidebar {
-  width: 250px;
+  width: 20rem;
   height: 100vh;
   background-color: white;
   position: fixed;
   top: 0;
-  left: -250px; 
+  left: -20rem; 
   z-index: 1000;  /*Above overlay*/ 
   transition: left 0.3s ease;
 }
@@ -145,6 +145,7 @@ header{
 .sidebar .logo{
 	position: relative;
 	top: 0;
+	margin-left: 2rem;
 }
 
 .sidebar .logo img{
@@ -167,7 +168,7 @@ header{
 }
 
 .sidebar ul li {
-  padding: 15px 20px;
+  padding: 1rem 3rem;
   transition: background-color 0.3s ease;
 }
 

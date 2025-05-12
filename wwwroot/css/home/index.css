@@ -224,7 +224,7 @@
 
 .top-categories-container{
 	width: 100%;
-	height: 40vh;
+	height: 22rem;
 	margin-bottom: 3%;
 }
 
@@ -248,7 +248,7 @@
 }
 
 .top-categories-inner-container{
-	height: 100%;
+	height: 17rem;
 	width: 100%;
 	display: flex;
 	justify-content: space-between;

@@ -1,3 +1,5 @@
 colors:
 	primary: #f16318 (orange)
 	secondary: #222 (darkgrey)
+	start color: #f7e816
+	favorite color: #ff527b
