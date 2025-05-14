@@ -7,7 +7,8 @@ import { watches } from "../data/watches.js";
 
 import { getStoredData, storeJsonData, removeAllData } from "../utils/localStorageutil.js";
 
-window.addEventListener("DOMContentLoaded", () => {
+// Use jQuery's document ready
+$(document).ready(function () {
   populateAllData();
   // removeAllData();
 });
@@ -23,9 +24,10 @@ function populateAllData() {
     watches,
   };
 
-  for (const [key, value] of Object.entries(dataMap)) {
+  $.each(dataMap, function (key, value) {
     if (!getStoredData(key)) {
       storeJsonData(key, value);
     }
-  }
+  });
 }
+

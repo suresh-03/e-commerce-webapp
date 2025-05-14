@@ -15,7 +15,7 @@ export function getIdFromURL() {
 }
 
 // --- Product Factory Function ---
-function createProduct(id, name, description, price, rating, ratingCount, isFavorite, isAddedToCart, imageURL) {
+function createProduct(id, name, description, price, rating, ratingCount, isFavorite, isAddedToCart, imageURL, imageName) {
     return {
         id,
         name,
@@ -25,7 +25,8 @@ function createProduct(id, name, description, price, rating, ratingCount, isFavo
         ratingCount,
         isFavorite,
         isAddedToCart,
-        imageURL
+        imageURL,
+        imageName
     };
 }
 
@@ -38,7 +39,7 @@ export function InsertNewCategory(category) {
 }
 
 // --- Insert a New Product ---
-export function InsertNewProduct(category, name, description, price, rating, ratingCount, isFavorite, isAddedToCart, imageURL) {
+export function InsertNewProduct(category, name, description, price, rating, ratingCount, isFavorite, isAddedToCart, imageURL,imageName) {
     const products = getStoredData(category);
 
     const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;

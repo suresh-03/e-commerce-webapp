@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Run Javascript";
+}
+
+<!-- <button onclick="runJS()">Run Javascript</button> -->
+
+@section Scripts{
+    <script type="module" src="~/js/utils/commonUtil.js"></script>
+    <script>
+
+        function runJS(){
+            InsertNewProduct(
+            'tshirts',
+            'Urban Street Graphic Tee',
+            'Premium cotton t-shirt',
+            799.00,
+            516,        
+            120,        
+            false,
+            false,
+            'http://localhost:5287/images/tshirts/tshirts-16.jpg'
+            );
+        }
+
+    </script>
+}

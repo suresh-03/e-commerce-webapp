@@ -1,58 +1,52 @@
 ﻿function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("overlay");
-
-  sidebar.classList.toggle("active");
-  overlay.classList.toggle("active");
+  $("#sidebar").toggleClass("active");
+  $("#overlay").toggleClass("active");
 }
 
 // Function to close the sidebar if clicked outside
 function closeSidebarOnOutsideClick(event) {
-  const sidebar = document.getElementById("sidebar");
-  const toggleButton = document.getElementById("categories-menu");
+  const $sidebar = $("#sidebar");
+  const $toggleButton = $("#categories-menu");
 
-  const isClickInsideSidebar = sidebar.contains(event.target);
-  const isClickOnToggleButton = toggleButton.contains(event.target);
+  const isClickInsideSidebar = $sidebar[0].contains(event.target);
+  const isClickOnToggleButton = $toggleButton[0].contains(event.target);
 
-  // Close sidebar if click is outside both the sidebar and the toggle button
   if (!isClickInsideSidebar && !isClickOnToggleButton) {
-    sidebar.classList.remove("active");
+    $sidebar.removeClass("active");
     removeOverlay();
   }
 }
 
 // Function to initialize event listeners
 function initializeSidebar() {
-  // Add event listener for the toggle button
-  document.getElementById("categories-menu").addEventListener("click", (e) => {
-    e.stopPropagation(); // Prevent click from reaching the document
+  // Toggle sidebar on menu button click
+  $("#categories-menu").on("click", function (e) {
+    e.stopPropagation(); // Prevent event from bubbling to document
     toggleSidebar();
   });
 
-  // Add event listener to close sidebar if clicked outside
-  document.addEventListener("click", closeSidebarOnOutsideClick);
+  // Close sidebar when clicking outside
+  $(document).on("click", function (e) {
+    closeSidebarOnOutsideClick(e);
+  });
 
-  // Add event listener to close sidebar if clicked on overlay
-  document.getElementById("overlay").addEventListener("click", () => {
-    document.getElementById("sidebar").classList.remove("active");
+  // Close sidebar on overlay click
+  $("#overlay").on("click", function () {
+    $("#sidebar").removeClass("active");
     removeOverlay();
   });
 
-  // Add event listener to close sidebar using close button inside the sidebar
-  document.getElementById("closeSidebar").addEventListener("click", () => {
-    document.getElementById("sidebar").classList.remove("active");
+  // Close sidebar on close button click
+  $("#closeSidebar").on("click", function () {
+    $("#sidebar").removeClass("active");
     removeOverlay();
   });
 }
 
-
-// remove overlay
-function removeOverlay(){
-  const overlay = document.getElementById("overlay");
-  overlay.classList.remove("active");
+// Remove overlay
+function removeOverlay() {
+  $("#overlay").removeClass("active");
 }
 
 // Initialize everything
 initializeSidebar();
-
-

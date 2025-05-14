@@ -76,9 +76,10 @@
   text-overflow: ellipsis;   /* Adds "..." to indicate overflow */
   width: 100%;
   display: block;
+  font-size: small;
 }
 
-.product-container .product-inner-container .product-information p,
+
 .product-container .product-inner-container .product-information .ratings
 {
 	font-size: small;

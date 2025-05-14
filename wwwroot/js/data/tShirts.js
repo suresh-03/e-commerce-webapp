@@ -165,5 +165,16 @@ export const tshirts = [
     isFavorite: false,
     isAddedToCart: true,
     imageURL: folderPath + "t-shirts-15.jpg"
+  },
+  {
+    id: 15,
+    name: "DarkFit",
+    description: "Solid dark blue casual t-shirt",
+    price: 32.90,
+    rating: 45, // 45 / 15 = 3.0
+    ratingCount: 15,
+    isFavorite: false,
+    isAddedToCart: true,
+    imageURL: folderPath + "t-shirts-15.jpg"
   }
 ];

@@ -1,122 +1,78 @@
 import { getStoredData } from "../utils/localStorageUtil.js";
 import { getCategoryFromURL } from "../utils/commonUtil.js";
 
-
-function renderProductsPage(){
-
+function renderProductsPage() {
   const category = getCategoryFromURL();
-  const product = getStoredData(category);
+  const products = getStoredData(category);
 
-
-  product.forEach((value,key) => {
-    createElements(value,category);
+  products.forEach((product) => {
+    createElements(product, category);
   });
-
 }
 
+function createElements(product, category) {
+  const $img = $("<img>").attr("src", product.imageURL);
+  const $productImage = $("<div>").addClass("product-image").append($img);
 
-function createElements(product,category){
+  // ------------------------------------------------------
 
-  const productImage = document.createElement("div");
-  productImage.classList.add("product-image");
+  const $h4 = $("<h4>").text(product.name);
+  const $p1 = $("<p>").text(product.description);
+  const $p2 = $("<p>").addClass("product-price").text(`$${product.price}`);
 
-  const img = document.createElement("img");
-  img.src = product.imageURL;
-
-  productImage.appendChild(img);
-
-  //-----------------------------------------------------------------
-
-  const productInformation = document.createElement("div");
-  productInformation.classList.add("product-information");
-
-  const h4 = document.createElement("h4");
-  h4.textContent = product.name;
-
-  const p1 = document.createElement("p");
-  p1.textContent = product.description;
-
-  const p2 = document.createElement("p");
-  p2.classList.add("product-price");
-  p2.textContent = "$"+product.price;
-
-  const ratings = document.createElement("div");
-  ratings.classList.add("ratings");
-
-  const rating = document.createElement("span");
-  rating.classList.add("rating");
   const avgRating = Math.round(product.rating / product.ratingCount);
-  rating.textContent = avgRating+"★";
+  const $rating = $("<span>").addClass("rating").text(`${avgRating}★`);
+  setBackgroundForRating(avgRating, $rating);
 
-  setBackgroundForRating(avgRating,rating);
+  const $ratingCount = $("<span>")
+    .addClass("rating-count")
+    .text(`${product.ratingCount} ratings`);
 
-  const ratingCount = document.createElement("span");
-  ratingCount.classList.add("rating-count");
-  ratingCount.textContent = `${product.ratingCount} ratings`;
+  const $ratings = $("<div>")
+    .addClass("ratings")
+    .append($rating)
+    .append($ratingCount);
 
-  ratings.appendChild(rating)
-  ratings.appendChild(ratingCount);
+  const $productInformation = $("<div>")
+    .addClass("product-information")
+    .append($h4, $p1, $p2, $ratings);
 
-  productInformation.appendChild(h4);
-  productInformation.appendChild(p1);
-  productInformation.appendChild(p2);
-  productInformation.appendChild(ratings);
+  // -------------------------------------------------------
 
-  // ------------------------------------------------------------------
+  const $a = $("<a>")
+    .attr("href", `product/details?category=${category}&id=${product.id}`)
+    .append($productImage, $productInformation);
 
-  const a = document.createElement("a");
-  a.href = `product/details?category=${category}&id=${product.id}`;
-  a.appendChild(productImage);
-  a.appendChild(productInformation);
+  // -------------------------------------------------------
 
-  // ------------------------------------------------------------------
+  const $productGrid = $("<div>").addClass("product-grid").append($a);
 
-  const productGrid = document.createElement("div");
-  productGrid.classList.add("product-grid");
+  // -------------------------------------------------------
 
-  productGrid.appendChild(a);
-
-  // -------------------------------------------------------------------
-
-  const productInnerContainer = document.getElementById("product-inner-container");
-
-  productInnerContainer.appendChild(productGrid);
-
-
-  // -------------------------------------------------------------------
-
+  $("#product-inner-container").append($productGrid);
 }
 
-
-
-function setBackgroundForRating(rating,ratingElement){
-  switch(rating){
+function setBackgroundForRating(rating, $ratingElement) {
+  switch (rating) {
     case 1:
-      ratingElement.style.backgroundColor = "tomato";
-      ratingElement.style.color = "white";
+      $ratingElement.css({ backgroundColor: "tomato", color: "white" });
       break;
     case 2:
-      ratingElement.style.backgroundColor = "orange";
-      ratingElement.style.color = "white";
+      $ratingElement.css({ backgroundColor: "orange", color: "white" });
       break;
     case 3:
-      ratingElement.style.backgroundColor = "yellow";
+      $ratingElement.css({ backgroundColor: "yellow" });
       break;
     case 4:
-      ratingElement.style.backgroundColor = "blue";
-      ratingElement.style.color = "white";
+      $ratingElement.css({ backgroundColor: "blue", color: "white" });
       break;
     case 5:
-      ratingElement.style.backgroundColor = "green";
-      ratingElement.style.color = "white";
+      $ratingElement.css({ backgroundColor: "green", color: "white" });
       break;
     default:
-      ratingElement.style.backgroundColor = "green";
-      ratingElement.style.color = "white";
-      ratingElement.textContent = "5★";
-
+      $ratingElement.css({ backgroundColor: "green", color: "white" });
+      $ratingElement.text("5★");
   }
 }
-
 
 renderProductsPage();

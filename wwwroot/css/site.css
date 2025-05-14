@@ -71,7 +71,19 @@ header{
 	border-top: 2px solid black;
 	border-bottom: 2px solid black;
 	border-right: none;
+	padding-left: 20px;
+	font-size: medium;
 }
+
+.nav-container .search-bar input::placeholder{
+	font-size: medium;
+}
+
+.nav-container .search-bar input:focus {
+  outline: none;      /* Removes default browser outline */
+  box-shadow: none;   /* Removes any box shadow (if present) */
+}
+
 
 .nav-container .search-bar button{
 	border-left: none;

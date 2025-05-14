@@ -1,158 +1,113 @@
-import { getCategoryFromURL, getIdFromURL} from "../utils/commonUtil.js";
+import { getCategoryFromURL, getIdFromURL } from "../utils/commonUtil.js";
 import { getStoredData, storeJsonData } from "../utils/localStorageUtil.js";
 
+function renderProductPage() {
+  const category = getCategoryFromURL();
+  const id = getIdFromURL();
+  const products = getStoredData(category);
 
-function renderProductPage(){
-	const category = getCategoryFromURL();
-	const id = getIdFromURL();
-
-	const products = getStoredData(category);
-
-	createElements(category,id,products);
-
+  createElements(category, id, products);
 }
 
+function createElements(category, id, products) {
+  const productId = parseInt(id);
+  const product = products[productId - 1];
+  console.log(product);
 
-function createElements(category,id,products){
+  $("#product-img").attr("src", product.imageURL);
+  $("#product-name").text(product.name);
+  $("#product-details").text(product.description);
+  $("#product-price").text(`$${product.price}`);
+  $("#ratings-count").text(`${product.ratingCount} ratings`);
 
-	const productId = parseInt(id);
+  const avgRating = Math.round(product.rating / product.ratingCount);
+  renderStarRatings(avgRating);
 
-	const product = products[productId-1];
-	console.log(product);
+  const $cartBtn = $("#cart-btn");
+  $cartBtn.data("id", productId);
+  $cartBtn.data("category", category);
 
-	
-	document.getElementById("product-img").src = product.imageURL;
-	document.getElementById("product-name").textContent = product.name;
-	document.getElementById("product-details").textContent = product.description;
-	document.getElementById("product-price").textContent = `$${product.price}`;
-	document.getElementById("ratings-count").textContent = `${product.ratingCount} ratings`;
+  renderCartButton(product);
 
-	const avgRating = Math.round(product.rating / product.ratingCount);
+  const $favoriteBtn = $("#favorite-btn");
+  $favoriteBtn.data("id", productId);
+  $favoriteBtn.data("category", category);
 
-	renderStarRatings(avgRating);
+  renderFavoriteButton(product);
 
-	const cartBtn = document.getElementById("cart-btn");
-	cartBtn.dataset.id = productId;
-	cartBtn.dataset.category = category;
-
-	renderCartButton(product);
-
-	const favoriteBtn = document.getElementById("favorite-btn");
-	favoriteBtn.dataset.id = productId;
-	favoriteBtn.dataset.category = category;
-
-  	renderFavoriteButton(product);
-
-	cartBtn.addEventListener("click", toggleCart);
- 	favoriteBtn.addEventListener("click", toggleFavorite);
-
+  $cartBtn.on("click", toggleCart);
+  $favoriteBtn.on("click", toggleFavorite);
 }
 
-function renderCartButton(product){
-	const span = document.getElementById("cart-icon");
-	if(product.isAddedToCart){
-		span.classList.remove("add-to-cart");
-		span.classList.add("remove-from-cart");
-		span.textContent = "remove_shopping_cart";
-
-		document.getElementById("cart-content").textContent = "Remove from Cart";
-	}
-	else{
-		span.classList.remove("remove-from-cart");
-		span.classList.add("add-to-cart");
-		span.textContent = "add_shopping_cart";
-
-		document.getElementById("cart-content").textContent = "Add to Cart";
-	}
+function renderCartButton(product) {
+  const $span = $("#cart-icon");
+  if (product.isAddedToCart) {
+    $span.removeClass("add-to-cart")
+         .addClass("remove-from-cart")
+         .text("remove_shopping_cart");
+    $("#cart-content").text("Remove from Cart");
+  } else {
+    $span.removeClass("remove-from-cart")
+         .addClass("add-to-cart")
+         .text("add_shopping_cart");
+    $("#cart-content").text("Add to Cart");
+  }
 }
 
-function renderFavoriteButton(product){
-	const span = document.getElementById("favorite-icon");
-	const favoriteContainer = document.getElementById("favorite-container");
-	if(product.isFavorite){
-		favoriteContainer.classList.remove("not-favorite-container");
-		favoriteContainer.classList.add("favorite-container");
-		span.classList.add("favorite-icon");
+function renderFavoriteButton(product) {
+  const $span = $("#favorite-icon");
+  const $container = $("#favorite-container");
 
-		document.getElementById("favorite-content").textContent = "Favorite";
-	}
-	else{
-		favoriteContainer.classList.remove("favorite-container");
-		favoriteContainer.classList.add("not-favorite-container");
-		span.classList.remove("favorite-icon");
-
-		document.getElementById("favorite-content").textContent = "Add to Favorites";
-	}
+  if (product.isFavorite) {
+    $container.removeClass("not-favorite-container")
+              .addClass("favorite-container");
+    $span.addClass("favorite-icon");
+    $("#favorite-content").text("Favorite");
+  } else {
+    $container.removeClass("favorite-container")
+              .addClass("not-favorite-container");
+    $span.removeClass("favorite-icon");
+    $("#favorite-content").text("Add to Favorites");
+  }
 }
 
-function renderStarRatings(avgRating){
-	const star1 = document.getElementById("star-1");
-	const star2 = document.getElementById("star-2");
-	const star3 = document.getElementById("star-3");
-	const star4 = document.getElementById("star-4");
-	const star5 = document.getElementById("star-5");
-
-	if(avgRating >= 1){
-		star1.classList.add("filled-star");
-		star1.classList.remove("not-filled-star");
-	}
-	if(avgRating >= 2){
-		star2.classList.add("filled-star");
-		star2.classList.remove("not-filled-star");
-	}
-	if(avgRating >= 3){
-		star3.classList.add("filled-star");
-		star3.classList.remove("not-filled-star");
-	}
-	if(avgRating >= 4){
-		star4.classList.add("filled-star");
-		star4.classList.remove("not-filled-star");
-	}
-	if(avgRating >= 5){
-		star5.classList.add("filled-star");
-		star5.classList.remove("not-filled-star");
-	}
-
+function renderStarRatings(avgRating) {
+  for (let i = 1; i <= 5; i++) {
+    const $star = $(`#star-${i}`);
+    if (i <= avgRating) {
+      $star.addClass("filled-star").removeClass("not-filled-star");
+    } else {
+      $star.removeClass("filled-star").addClass("not-filled-star");
+    }
+  }
 }
-
 
 function toggleCart(event) {
-  const dataset = event.target.closest('a').dataset;
-  const products = getStoredData(dataset.category);
-  const product = products[dataset.id-1];
+  const $target = $(event.target).closest("a");
+  const id = $target.data("id");
+  const category = $target.data("category");
 
-  const isAddedToCart = product.isAddedToCart;
+  const products = getStoredData(category);
+  const product = products[id - 1];
 
-  if(isAddedToCart){
-  	product.isAddedToCart = false;
-  }
-  else{
-  	product.isAddedToCart = true;
-  }
-  storeJsonData(dataset.category,products);
+  product.isAddedToCart = !product.isAddedToCart;
+
+  storeJsonData(category, products);
   renderCartButton(product);
 }
 
 function toggleFavorite(event) {
-  const dataset = event.target.closest('a').dataset;
-  const products = getStoredData(dataset.category);
-  const product = products[dataset.id-1];
+  const $target = $(event.target).closest("a");
+  const id = $target.data("id");
+  const category = $target.data("category");
 
-  const isFavorite = product.isFavorite;
+  const products = getStoredData(category);
+  const product = products[id - 1];
 
-  if(isFavorite){
-  	product.isFavorite = false;
-  }
-  else{
-  	product.isFavorite = true;
-  }
-  storeJsonData(dataset.category,products);
+  product.isFavorite = !product.isFavorite;
+
+  storeJsonData(category, products);
   renderFavoriteButton(product);
 }
 
-
-
-
-
 renderProductPage();
-
