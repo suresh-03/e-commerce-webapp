@@ -8,3 +8,6 @@ bin/
 
 #lib
 wwwroot/lib/
+
+#vs settings
+.vs/
