@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Sign In";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/auth/signin.css" asp-append-version="true" />
+}
+
+<div class="signin-container">
+    <div class="alert-message">
+        <span id="alertMessage"></span>
+    </div>
+    <div class="form-container">
+        <form id="signin-form">
+            @Html.AntiForgeryToken()
+            <label for="email">Email</label><br />
+            <input type="email" id="email" name="email" placeholder="Enter your Email" required><br />
+
+            <label for="password">Password</label><br />
+            <input type="password" id="password" name="password" placeholder="Enter your Password" required><br />
+
+            <input type="submit" /><br />
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="module" asp-append-version="true">
+        import { handleSignin } from "/js/auth/signin.js";
+        handleSignin('@Url.Action("SignInAPI","Auth")');
+    </script>
+}

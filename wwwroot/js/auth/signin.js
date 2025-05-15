@@ -1,25 +1,15 @@
-﻿import { isValidFullName, isValidEmail, isValidPassword, isValidPhone } from "../utils/commonUtil.js";
-export function handleSignup(api) { 
-    $("#phoneNo").on("input", function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
+﻿import { isValidEmail, isValidPassword } from "../utils/commonUtil.js";
+export function handleSignin(api) {
 
-    $("#signup-form").submit(function (event) {
+    $("#signin-form").submit(function (event) {
         event.preventDefault();
 
-        const fullName = $("#fullName").val();
         const email = $("#email").val();
         const password = $("#password").val();
-        const phoneNo = $("#phoneNo").val();
+
         const alertMessage = $("#alertMessage");
 
         alertMessage.text(""); // Clear previous messages
-
-        // Validation with early return
-        if (!isValidFullName(fullName)) {
-            alertMessage.text("Please enter a valid full name (at least 2 characters).").css("color", "red");
-            return;
-        }
 
         if (!isValidEmail(email)) {
             alertMessage.text("Please enter a valid email address.").css("color", "red");
@@ -31,18 +21,10 @@ export function handleSignup(api) {
             return;
         }
 
-        if (!isValidPhone(phoneNo)) {
-            alertMessage.text("Please enter a valid 10-digit phone number.").css("color", "red");
-            return;
-        }
-
         const bodyData = {
-            FullName: fullName,
             Email: email,
-            Password: password,
-            RoleType: 2, // Assuming 2 is for 'User'
-            Phone: phoneNo
-        };
+            Password: password
+        }
 
         var token = $('input[name="__RequestVerificationToken"]').val();
 
@@ -56,9 +38,10 @@ export function handleSignup(api) {
             },
             success: function (response) {
                 console.log(JSON.stringify(response));
-                if (response.status === "success") { 
-                    window.location.href = response.redirectURL;
-                } else {
+                if (response.status === "success") {
+                    window.location.href = response.redirectUrl;
+                }
+                else {
                     alertMessage.text(response.message).css("color", "red");
                 }
             },
@@ -79,6 +62,8 @@ export function handleSignup(api) {
                 alertMessage.text(errorMessage).css("color", "red");
             }
         });
-    });
-}
 
+
+    });
+
+}
