@@ -1,0 +1,72 @@
+@model Dictionary<string,List<Product>>
+
+    @{
+    ViewData["Title"] = "Cart";
+    }
+
+
+    @section Styles{
+        <link rel="stylesheet" href="~/css/cart/index.css" asp-append-version="true" />
+    }
+
+
+    <div class="cart-container">
+        @if (Model != null && Model.Any())
+    {
+        foreach (var category in Model)
+        {
+        <div class="cart-category">
+            <h3 class="cart-category-title">@category.Key</h3>
+            <ul class="cart-product-list">
+                @foreach (var product in category.Value)
+                    {
+                <a href="/Product/Details?category=@category.Key&id=@product.Id">
+                <li class="cart-product-item">
+                    <div class="cart-product-img">
+                        @if (!string.IsNullOrEmpty(product.ImageURL))
+                         {
+                            <img src="@product.ImageURL" alt="@product.Name" />
+                         }
+                         else
+                         {
+                            <div class="cart-product-placeholder"></div>
+                         }
+                    </div>
+                    <div class="cart-product-details">
+                        <span class="cart-product-name">@product.Name</span>
+                        <span class="cart-product-desc">@product.Description</span>
+                        <span class="cart-product-price">$@product.Price</span>
+                        <span class="cart-product-rating">
+                            @for (int i = 0; i < (product.Rating/product.RatingCount); i++)
+                                    {
+                            <span class="star">&#9733;</span>
+                                    }
+                            <span class="cart-product-rating-count">(@product.RatingCount)</span>
+                        </span>
+                        @if (product.IsFavorite == true)
+                                {
+                        <span class="cart-product-favorite" title="Favorite">&#10084;</span>
+                                }
+                    </div>
+                </li>
+                </a>
+                    }
+            </ul>
+        </div>
+        }
+    }
+    else
+    {
+        <div class="cart-empty">
+            <p>Your cart is empty.</p>
+        </div>
+    }
+    </div>
+
+
+    @section Scripts{
+        <script src="~/js/cart/index.js"></script>
+        <script type="text/javascript">
+        sendLocalStorageData('@Url.Action("GetLocalStorageData", "Cart")');
+        </script>
+    }
