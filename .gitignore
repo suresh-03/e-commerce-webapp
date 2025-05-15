@@ -11,3 +11,5 @@ wwwroot/lib/
 
 #vs settings
 .vs/
+
+Migrations/

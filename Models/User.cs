@@ -18,18 +18,15 @@ namespace e_commerce_website.Models
 
         [Required]
         [StringLength(256)]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
 
         [Phone]
-        [StringLength(15)]
+        [StringLength(10)]
         public string Phone { get; set; }
 
         // Foreign Key
-        [ForeignKey("Role")]
-        public int RoleID { get; set; }
-
-        // Navigation Property
-        public Role Role { get; set; }
+        public RoleType RoleType { get; set; }
+       
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
@@ -41,6 +38,12 @@ namespace e_commerce_website.Models
 
         public ICollection<Order>? Orders { get; set; }
 
+    }
+
+    public enum RoleType
+    {
+        Admin = 1,
+        User = 2
     }
 }
 

@@ -10,9 +10,9 @@ namespace e_commerce_website.Models
         public int PaymentID { get; set; }
 
         // Foreign Key
-        [ForeignKey("Order")]
         public int OrderID { get; set; }
 
+        [ForeignKey("OrderID")]
         public Order? Order { get; set; }  // Navigation property
 
         public PaymentMethodType PaymentMethod { get; set; }  // e.g., UPI, Card, COD

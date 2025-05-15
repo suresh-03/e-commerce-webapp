@@ -11,14 +11,13 @@ namespace e_commerce_website.Models
         // Foreign Key
         public int OrderID { get; set; }
 
-        [ForeignKey("Order")]
+        [ForeignKey("OrderID")]
         public Order? Order { get; set; }
 
         // Foreign Key
         public int VariantID { get; set; }
 
-        [ForeignKey("ProductVariant")]
-
+        //[ForeignKey("ProductVariant")]
         public ProductVariant? ProductVariant { get; set; }
 
         public int Quantity { get; set; }

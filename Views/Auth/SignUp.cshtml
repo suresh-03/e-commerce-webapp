@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Sign Up";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/auth/signup.css" asp-append-version="true" />
+}
+
+
+<div class="signup-container">
+    <div class="alert-message">
+        <span id="alertMessage"></span>
+    </div>
+    <div>
+    <form id="signup-form">
+            <label for="name">FullName</label><br />
+            <input type="text" id="fullName" name="name" placeholder="Enter your full name" required><br />
+
+            <label for="email">Email</label><br />
+            <input type="email" id="email" name="email" placeholder="Enter your Email" required><br />
+
+            <label for="password">Password</label><br />
+            <input type="password" id="password" name="password" placeholder="Enter your Password" required><br />
+
+            <label for="phone-no">Phone No</label><br />
+            <input type="text" id="phoneNo" name="phone-no" placeholder="Enter your Phone No" required><br />
+
+            <input type="submit" id="submit-btn" /><br />
+    </form>
+    </div>
+        
+</div>
+
+@section Scripts{
+    <script src="~/js/auth/signup.js" asp-append-version="true"></script>
+    <script>
+        handleSignup('/api/auth/signup');
+    </script>
+}
