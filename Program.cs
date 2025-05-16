@@ -1,17 +1,25 @@
+using e_commerce_website.Configs;
 using e_commerce_website.Database;
 using e_commerce_website.Filters;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
+
+// Service to Filter ObjectResult to JsonResult
 builder.Services.AddScoped<ApiResponseFilter>();
+
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<ApiResponseFilter>();
 });
 
+// Service for Cookie based Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -25,20 +33,23 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 
-
+// Service for DBContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Service for ServerConfig
+builder.Services.Configure<ServerConfig>(builder.Configuration.GetSection("ServerConfig"));
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
-{
+    {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}
+    }
 
 app.UseHttpsRedirection();
 app.UseRouting();

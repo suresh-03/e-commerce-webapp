@@ -1,10 +1,10 @@
 ﻿namespace e_commerce_website.Models
-{
+    {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     public class ProductVariant
-    {
+        {
         [Key]
         public int VariantID { get; set; }
 
@@ -32,12 +32,12 @@
         [StringLength(100)]
         public string SKU { get; set; }
 
-        public ICollection<ProductImage>? Images { get; set; }
-        public ICollection<Cart>? Carts { get; set; }
-        public ICollection<Wishlist>? Wishlists { get; set; }
+        public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
+        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public ICollection<Wishlist> Wishlists { get; set; } = new List<Wishlist>();
 
-        public ICollection<OrderItem>? OrderItems { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        }
 
     }
-
-}

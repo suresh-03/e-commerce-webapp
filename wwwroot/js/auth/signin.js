@@ -1,4 +1,4 @@
-﻿import { isValidEmail, isValidPassword } from "../utils/commonUtil.js";
+﻿import { isValidEmail, isValidPassword, showAlert } from "../utils/commonUtil.js";
 export function handleSignin(api) {
 
     $("#signin-form").submit(function (event) {
@@ -9,15 +9,14 @@ export function handleSignin(api) {
 
         const alertMessage = $("#alertMessage");
 
-        alertMessage.text(""); // Clear previous messages
 
         if (!isValidEmail(email)) {
-            alertMessage.text("Please enter a valid email address.").css("color", "red");
+            showAlert(alertMessage, "Please enter a valid email address.", "red");
             return;
         }
 
         if (!isValidPassword(password)) {
-            alertMessage.text("Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.").css("color", "red");
+            showAlert(alertMessage, "Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.", "red");
             return;
         }
 
@@ -42,7 +41,7 @@ export function handleSignin(api) {
                     window.location.href = response.redirectUrl;
                 }
                 else {
-                    alertMessage.text(response.message).css("color", "red");
+                    showAlert(alertMessage, response.message, "red");
                 }
             },
             error: function (xhr) {
@@ -58,8 +57,7 @@ export function handleSignin(api) {
                     // If responseText is not JSON, fall back to generic
                     console.error("Failed to parse error message:", e);
                 }
-
-                alertMessage.text(errorMessage).css("color", "red");
+                showAlert(alertMessage, errorMessage, "red");
             }
         });
 

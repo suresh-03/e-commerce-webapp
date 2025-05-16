@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace e_commerce_website.Models
-{
-    public class User
     {
+    public class User
+        {
         [Key]
         public int UserID { get; set; }
 
@@ -24,28 +24,19 @@ namespace e_commerce_website.Models
         [StringLength(10)]
         public string Phone { get; set; }
 
-        // Foreign Key
-        public RoleType RoleType { get; set; }
-       
-
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public ICollection<Cart>? Carts { get; set; }
-        public ICollection<Wishlist>? Wishlists { get; set; }
+        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public ICollection<Wishlist> Wishlists { get; set; } = new List<Wishlist>();
 
-        public ICollection<Review>? Reviews { get; set; }
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
-        public ICollection<Order>? Orders { get; set; }
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+
+        }
 
     }
-
-    public enum RoleType
-    {
-        Admin = 1,
-        User = 2
-    }
-}
 
 
 

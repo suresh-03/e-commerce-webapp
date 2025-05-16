@@ -1,5 +1,19 @@
+@model Product
+@using e_commerce_website.Helpers
+
 @{
 	ViewData["Title"] = "Product Details";
+	var primaryVariantImage = Model.Variants?.Select(pv => pv.Images.Where(pi => pi.IsPrimary));
+	var primaryVariantSize = Model.Variants?.Select(pv => pv.Size).FirstOrDefault();
+	var primaryVariantPrice = Model.Variants?.Select(pv => pv.Price).FirstOrDefault();
+	var primaryVariantColor = Model.Variants?.Select(pv => pv.Color).FirstOrDefault();
+	var primayImageUrl = primaryVariantImage.FirstOrDefault().Select(pi => pi.ImageUrl).FirstOrDefault();
+
+
+    var avgRating = (Model.Reviews != null && Model.Reviews.Count > 0)
+        ? Math.Round(Model.Reviews.Average(r => r.Rating))
+        : 5; // Default to 5 if no reviews
+
 }
 
 
@@ -15,22 +29,24 @@
 <div class="product-details-container">
 	<div id="product-details-inner-container" class="product-details-inner-container">
 		<div class="product-image">
-			<img id="product-img" alt="Product Image">
+			<img id="product-img" src="@primayImageUrl" alt="Product Image">
 		</div>
 		<div class="product-details-outer">
 			<div class="product-details-inner">
-			<h2 id="product-name">product name</h2>
-			<h3 id="product-details">product details</h3>
+			<h2 id="product-name">@StringHelper.CapitalizeEachWord(Model.ProductName)</h2>
+			<h3 id="product-brand">@StringHelper.CapitalizeEachWord(Model.Brand?.BrandName)</h3>
+				<h3 id="product-details">@StringHelper.CapitalizeEachWord(Model.Description)</h3>
 			<div id="star-ratings" class="star-ratings">
-				<span id="star-1" class="material-symbols-outlined not-filled-star">star</span>
-				<span id="star-2" class="material-symbols-outlined not-filled-star">star</span>
-				<span id="star-3" class="material-symbols-outlined not-filled-star">star</span>
-				<span id="star-4" class="material-symbols-outlined not-filled-star">star</span>
-				<span id="star-5" class="material-symbols-outlined not-filled-star">star</span>
-				<span id="ratings-count"></span>
-				<!-- <span id="rate-product">Rate this Product</span> -->
+				
+					
+						@for (int i = 1; i <= 5; i++)
+							{
+							var starClass = i <= avgRating ? "filled-star" : "not-filled-star";
+							<span class="material-symbols-outlined @starClass">star</span>
+							}
+					
 			</div>
-			<p id="product-price" class="product-price">price</p>
+			<p id="product-price" class="product-price">$@primaryVariantPrice</p>
 			<p class="tax-info">inclusive of all taxes</p>
 			<p class="colors-info">Available Colors</p>
 			<div class="product-colors">
@@ -72,5 +88,5 @@
 
 
 @section Scripts{
-	<script type="module" src="~/js/products/details.js"></script>
+	@* <script type="module" src="~/js/products/details.js"></script> *@
 }

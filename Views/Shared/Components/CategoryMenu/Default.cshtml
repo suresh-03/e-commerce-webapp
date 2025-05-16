@@ -1,0 +1,20 @@
+﻿@model Dictionary<string, List<string>>
+
+
+@if (Model != null)
+    {
+    foreach (var categoryGroup in Model)
+        {
+        <h3>@categoryGroup.Key.ToUpper()</h3>
+        <ul id="menu-items">
+            @foreach (var subCategory in categoryGroup.Value)
+                {
+                <li>
+                    <a asp-controller="Product" asp-action="Index" asp-route-category="@subCategory">
+                        @char.ToUpper(subCategory[0])@subCategory.Substring(1)
+                    </a>
+                </li>
+                }
+        </ul>
+        }
+    }

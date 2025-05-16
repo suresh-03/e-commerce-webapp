@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace e_commerce_website.Models
-{
-   
+    {
+
 
     public class Category
-    {
+        {
         [Key]
         public int CategoryID { get; set; }
 
@@ -20,10 +20,10 @@ namespace e_commerce_website.Models
         [ForeignKey("ParentCategoryID")]
         public Category? ParentCategory { get; set; }
 
-        public ICollection<Category>? SubCategories { get; set; }
+        public ICollection<Category> SubCategories { get; set; } = new List<Category>();
 
         // Navigation property
-        public ICollection<Product>? Products { get; set; }
-    }
+        public ICollection<Product> Products { get; set; } = new List<Product>();
+        }
 
-}
+    }

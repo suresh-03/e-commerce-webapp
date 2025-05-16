@@ -61,6 +61,10 @@
 	font-size: 1.2rem;
 }
 
+.product-details-inner #product-brand{
+	color: rgba(0,0,0,0.8);
+}
+
 .product-details-outer .star-ratings{
 	margin-top: 3%;
 	margin-left: 2%;

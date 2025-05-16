@@ -13,7 +13,7 @@ namespace e_commerce_website.Models
         // Foreign Key to User
         public int UserID { get; set; }
 
-        //[ForeignKey("User")]
+        [ForeignKey("UserID")]
         public User? User { get; set; }
 
         // Foreign Key to Product

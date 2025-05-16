@@ -11,20 +11,23 @@ namespace e_commerce_website.Models
         public int CartID { get; set; }
 
         // Foreign Key to User
+        [Required]
         public int UserID { get; set; }
 
-        //[ForeignKey("UserID")]
-        public User? User { get; set; }
-
         // Foreign Key to ProductVariant
+        [Required]
         public int VariantID { get; set; }
 
-        [ForeignKey("VariantID")]
-        public ProductVariant? Variant { get; set; }
+        [ForeignKey("UserID")]
+        public User User { get; set; } = null!;
 
+        [ForeignKey("VariantID")]
+        public ProductVariant Variant { get; set; } = null!;
+
+        [Range(1,int.MaxValue, ErrorMessage = "Quantity must be at least 1.")]
         public int Quantity { get; set; } = 1;
 
-        public DateTime AddedAt { get; set; } = DateTime.Now;
+        public DateTime AddedAt { get; set; } = DateTime.UtcNow;
     }
 
 }

@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace e_commerce_website.Models
-{
-    
+    {
+
 
     public class Product
-    {
+        {
         [Key]
         public int ProductID { get; set; }
 
@@ -30,20 +30,20 @@ namespace e_commerce_website.Models
 
         public GenderType Gender { get; set; }  // Men, Women, Unisex
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<ProductVariant>? Variants { get; set; }
+        public ICollection<ProductVariant> Variants { get; set; } = new List<ProductVariant>();
 
-        public ICollection<Review>? Reviews { get; set; }
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
 
-    }
+        }
 
     public enum GenderType
-    {
+        {
         Men = 1,
         Women = 2
-    }
+        }
 
-}
+    }

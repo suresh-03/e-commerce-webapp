@@ -65,7 +65,6 @@ namespace e_commerce_website.Controllers
                         FullName = model.FullName,
                         Email = model.Email,
                         Phone = model.Phone,
-                        RoleType = model.RoleType,
                         Password = model.Password,
                         CreatedAt = DateTime.Now,
                         UpdatedAt = DateTime.Now
@@ -137,10 +136,9 @@ namespace e_commerce_website.Controllers
 
                 // Setup claims
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Email),
-            new Claim(ClaimTypes.Role, user.RoleType.ToString())
-        };
+                {
+                   new Claim(ClaimTypes.Name, user.Email)
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties

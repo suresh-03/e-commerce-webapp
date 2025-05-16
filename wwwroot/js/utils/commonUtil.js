@@ -83,3 +83,10 @@ export function isValidEmail(email) {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
 }
+
+export function showAlert(alertMessage, message, color = "red") {
+    alertMessage.stop(true, true).css({ color: color, display: "block" }).text(message);
+    setTimeout(() => {
+        alertMessage.fadeOut(300, () => alertMessage.text("").show());
+    }, 2500);
+}
