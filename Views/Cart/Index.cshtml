@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<Cart>
+@using e_commerce_website.Helpers
 @{
+    ViewData["Title"] = "My Cart";
 }
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/cart/index.css" asp-append-version="true" />
+}
+
+@if (!Model.Any())
+    {
+    <div class="empty-cart-container">
+    <div class="empty-cart-message">
+        <h2>Your cart is currently empty</h2>
+        <p>Looks like you haven’t added anything to your cart yet.</p>
+        <a asp-controller="Product" asp-action="Index" class="shop-now-btn">Continue Shopping</a>
+    </div>
+    </div>
+    return;
+    }
+
+
+<h1>My Cart</h1>
+
+<div id="cart-container">
+    @foreach (var item in Model)
+        {
+        var productPrice = item.Variant?.Price;
+        var imageUrl = item.Variant?.Images?.Where(i => i.VariantID == item.VariantID).Select(i => i.ImageUrl).FirstOrDefault();
+        var productName = StringHelper.CapitalizeEachWord(item.Variant?.Product?.ProductName ?? "Product Name");
+        var productColor = StringHelper.CapitalizeEachWord(item.Variant?.Color ?? "Color");
+        var productSize = item.Variant?.Size ?? "Size";
+        var variantId = item.VariantID;
+        var productCategory = StringHelper.CapitalizeEachWord(item.Variant?.Product?.Category?.CategoryName ?? "Category Name");
+
+        
+        <div class="cart-item" data-cart-id="@item.CartID" data-unit-price="@productPrice">
+            <a asp-controller="Product" asp-action="Details" asp-route-id="@variantId" asp-route-category="@productCategory">
+            <img src="@imageUrl" alt="@productName" class="product-img" />
+            </a>
+
+            <div class="product-details">
+                <h3>@productName</h3>
+                <p>Color: @productColor</p>
+                <p>Size: @productSize</p>
+                <p>Price per item: ₹@productPrice</p>
+
+                <div class="quantity-controls">
+                    <button class="qty-btn decrease">-</button>
+                    <span class="qty-value">@item.Quantity</span>
+                    <button class="qty-btn increase">+</button>
+                </div>
+
+                <p class="total-price">Total: ₹<span class="total-value">@(item.Quantity* productPrice)</span></p>
+                <div class="cart-btns">
+                    <button id="remove-cart-btn" class="remove-cart-btn">Remove</button>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+        </div>
+       
+        }
+</div>
+
+    @section Scripts {
+    <script src="~/js/cart/index.js"></script>
+    }

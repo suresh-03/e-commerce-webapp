@@ -20,9 +20,38 @@ namespace e_commerce_website.Controllers
             _context = context;
             }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
             {
-            return View();
+            try
+                {
+                var userIdentity = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userIdentity))
+                    {
+                    _logger.LogWarning("Fetch Cart: User is not Authenticated");
+                    return Unauthorized(new { message = "User is not Authenticated" });
+                    }
+
+                var userId = int.Parse(userIdentity);
+
+                var cartItems = await _context.Carts
+                    .Include(cart => cart.Variant)
+                        .ThenInclude(variant => variant.Product)
+                        .ThenInclude(category => category.Category)
+                    .Include(cart => cart.Variant)
+                        .ThenInclude(variant => variant.Images)
+                    .Where(cart => cart.UserID == userId)
+                    .ToListAsync();
+
+
+                return View(cartItems);
+                }
+            catch (Exception ex)
+                {
+                _logger.LogError(ex, "Error occurred while fetching cart items.");
+                return StatusCode(500, new { success = false, message = "An error occurred while fetching cart items." });
+                }
+
             }
 
         [HttpGet]
