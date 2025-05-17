@@ -1,0 +1,65 @@
+﻿@model List<Product>
+@using e_commerce_website.Helpers
+
+@functions {
+    public string GetRatingColors(int rating)
+        {
+        return rating switch
+            {
+                1 => "background-color:tomato; color:white;",
+                2 => "background-color:orange; color:white;",
+                3 => "background-color:yellow;",
+                4 => "background-color:blue; color:white;",
+                _ => "background-color:green; color:white;"
+                };
+        }
+    }
+
+
+@if(Model.Count == 0)
+    {
+    <div id="no-products">
+        <h2>No products found for "<span><strong>@ViewData["Query"]</strong></span>"</h2>
+        <p>Try searching for something else.</p>
+    </div>
+    return;
+    }
+
+<div id="search-result-feedback" style="display:none; width: 80%; margin: auto; margin-top: 20px;">
+    <h2 id="search-result-feedback-content"></h2>
+</div>
+<div class="product-container">
+    <div id="product-inner-container" class="product-inner-container">
+        <! ------------ PRODUCTS WILL BE DYNAMICALLY CREATED ----------------- -->
+
+        @foreach (var product in Model)
+            {
+            var primaryVariant = product.Variants?.FirstOrDefault();
+            var primaryImage = primaryVariant?.Images?.FirstOrDefault(i => i.IsPrimary) ?? primaryVariant?.Images?.FirstOrDefault();
+            var avgRating = (product.Reviews != null && product.Reviews.Count > 0)
+            ? Math.Round(product.Reviews.Average(r => r.Rating))
+            : 5; // Default rating if no reviews
+
+            var ratingCount = product.Reviews?.Count ?? 0;
+            var ratingColor = GetRatingColors(ratingCount);
+
+
+            <div class="product-grid">
+                <a asp-controller="Product" asp-action="Details" asp-route-category="@product.Category?.CategoryName" asp-route-id="@product.ProductID" target="_blank">
+                    <div class="product-image">
+                        <img src="@primaryImage?.ImageUrl" alt="@product.ProductName" />
+                    </div>
+                    <div class="product-information">
+                        <h4>@StringHelper.CapitalizeEachWord(product.ProductName)</h4>
+                        <p>@StringHelper.CapitalizeEachWord(product.Description)</p>
+                        <p class="product-price">$@primaryVariant?.Price.ToString("0.00")</p>
+                        <div class="ratings">
+                            <span class="rating" style="@ratingColor">@avgRating★</span>
+                            <span class="rating-count">@ratingCount ratings</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            }
+    </div>
+</div>

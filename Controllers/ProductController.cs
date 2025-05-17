@@ -61,6 +61,7 @@ public class ProductController : Controller
 
 
 
+
     [HttpGet]
     public async Task<IActionResult> Details(int id, string category)
         {

@@ -1,25 +1,33 @@
 @model Product
 @using e_commerce_website.Helpers
+@using System.Security.Claims
 
-@{
-	ViewData["Title"] = "Product Details";
-	var primaryVariantImage = Model.Variants?.Select(pv => pv.Images.Where(pi => pi.IsPrimary));
-	var primaryVariantSize = Model.Variants?.Select(pv => pv.Size).FirstOrDefault();
-	var primaryVariantPrice = Model.Variants?.Select(pv => pv.Price).FirstOrDefault();
-	var primaryVariantColor = Model.Variants?.Select(pv => pv.Color).FirstOrDefault();
-	var primayImageUrl = primaryVariantImage.FirstOrDefault().Select(pi => pi.ImageUrl).FirstOrDefault();
 
+	@{
+    ViewData["Title"] = "Product Details";
+
+    var primaryVariant = Model.Variants?.FirstOrDefault();
+    var primaryImage = primaryVariant?.Images?.FirstOrDefault(i => i.IsPrimary) 
+                       ?? primaryVariant?.Images?.FirstOrDefault();
+
+    var primaryVariantSize = primaryVariant?.Size;
+    var primaryVariantPrice = primaryVariant?.Price;
+    var primaryVariantColor = primaryVariant?.Color;
+    var primaryImageUrl = primaryImage?.ImageUrl;
+    var primaryVariantId = primaryVariant?.VariantID;
 
     var avgRating = (Model.Reviews != null && Model.Reviews.Count > 0)
         ? Math.Round(Model.Reviews.Average(r => r.Rating))
-        : 5; // Default to 5 if no reviews
+        : 5;
 
 }
 
 
+
+
+
 @section Styles {
     <link rel="stylesheet" href="~/css/product/details.css" asp-append-version="true" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&wght@100..700&opsz@16..48" rel="stylesheet" />
 
 }
 
@@ -29,7 +37,7 @@
 <div class="product-details-container">
 	<div id="product-details-inner-container" class="product-details-inner-container">
 		<div class="product-image">
-			<img id="product-img" src="@primayImageUrl" alt="Product Image">
+			<img id="product-img" src="@primaryImageUrl" alt="Product Image">
 		</div>
 		<div class="product-details-outer">
 			<div class="product-details-inner">
@@ -50,19 +58,18 @@
 			<p class="tax-info">inclusive of all taxes</p>
 			<p class="colors-info">Available Colors</p>
 			<div class="product-colors">
-				<div class="color-outer">
-					<div class="color color-1"></div>
+				@foreach (var variant in Model.Variants)
+						{
+						var colorStyle = "background-color:" + variant.Color;
+						<div class="color-outer">
+							<div class="color" style=@colorStyle></div>
+						</div>
+						}
 				</div>
-				<div class="color-outer">
-					<div class="color color-2"></div>
-				</div>
-				<div class="color-outer">
-					<div class="color color-3"></div>
-				</div>
-			</div>
 			<div id="product-btns" class="product-btns">
 				<!-- href added dynamically -->
-				<a id="cart-btn" class="cart-btn">
+				@if(User.Identity != null && User.Identity.IsAuthenticated){
+				<a id="add-cart-btn" class="cart-btn" data-variant-id=@primaryVariantId href="#">
 					<div id="cart-container" class="cart-container">
 						<span id="cart-icon" class="material-symbols-outlined">
 							add_shopping_cart
@@ -70,7 +77,15 @@
 						<span id="cart-content">Add to Cart</span>
 					</div>
 				</a>
-
+					<a id="remove-cart-btn" class="cart-btn" data-variant-id=@primaryVariantId href="#">
+						<div id="cart-container" class="cart-container">
+							<span id="cart-icon" class="material-symbols-outlined">
+								remove_shopping_cart
+							</span>
+							<span id="cart-content">Remove From Cart</span>
+						</div>
+					</a>
+					}
 				<a id="favorite-btn" class="favourite-btn">
 					<div id="favorite-container" class="not-favorite-container">
 						<span id="favorite-icon" class="material-symbols-outlined favorite-icon">
@@ -85,8 +100,13 @@
 	</div>
 </div>
 
-
-
 @section Scripts{
-	@* <script type="module" src="~/js/products/details.js"></script> *@
+	<script src="~/js/cart/cart.js"></script>
+	@if(User.Identity != null && User.Identity.IsAuthenticated){
+	<script type="text/javascript">
+		handleCartExists("/api/cart/exists",@primaryVariantId);
+		handleAddToCart("/api/cart/add");
+		handleRemoveFromCart("/api/cart/remove");
+	</script>
+	}
 }
