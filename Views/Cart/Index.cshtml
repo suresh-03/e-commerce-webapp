@@ -35,7 +35,7 @@
         var productCategory = StringHelper.CapitalizeEachWord(item.Variant?.Product?.Category?.CategoryName ?? "Category Name");
 
         
-        <div class="cart-item" data-cart-id="@item.CartID" data-unit-price="@productPrice">
+        <div id="@($"cart-item-{variantId}")" class="cart-item" data-cart-id="@item.CartID" data-unit-price="@productPrice">
             <a asp-controller="Product" asp-action="Details" asp-route-id="@variantId" asp-route-category="@productCategory">
             <img src="@imageUrl" alt="@productName" class="product-img" />
             </a>
@@ -54,8 +54,8 @@
 
                 <p class="total-price">Total: ₹<span class="total-value">@(item.Quantity* productPrice)</span></p>
                 <div class="cart-btns">
-                    <button id="remove-cart-btn" class="remove-cart-btn">Remove</button>
-                    <button class="buy-btn">Buy Now</button>
+                    <a id="remove-cart-btn" class="remove-cart-btn" data-variant-id="@variantId">Remove</a>
+                    <a class="buy-btn">Buy Now</a>
                 </div>
             </div>
         </div>
@@ -65,4 +65,7 @@
 
     @section Scripts {
     <script src="~/js/cart/index.js"></script>
+    <script>
+        removeCartItem();
+    </script>
     }

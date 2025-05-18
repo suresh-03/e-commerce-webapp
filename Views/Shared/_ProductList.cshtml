@@ -1,6 +1,11 @@
 ﻿@model List<Product>
 @using e_commerce_website.Helpers
 
+@{
+    HashSet<string> colors = new HashSet<string>();
+    HashSet<string> brands = new HashSet<string>();
+}
+
 @functions {
     public string GetRatingColors(int rating)
         {
@@ -16,7 +21,7 @@
     }
 
 
-@if(Model.Count == 0)
+@if(Model.Count == 0 && !string.IsNullOrEmpty(ViewData["Query"] as string))
     {
     <div id="no-products">
         <h2>No products found for "<span><strong>@ViewData["Query"]</strong></span>"</h2>
@@ -24,6 +29,83 @@
     </div>
     return;
     }
+
+    <!-- DROPDOWN MENU-->
+
+ <div class="top-right-container">
+<div class="dropdown">
+    <button class="dropdown-toggle" onclick="toggleDropdown()">Filter & Sort By ▾</button>
+
+    <div id="dropdown-menu" class="dropdown-menu hidden">
+        <div class="section">
+            <h4>Sort By</h4>
+            <label>
+                <input type="radio" name="sort" value="low-high" />
+                Price: Low to High
+            </label>
+            <label>
+                <input type="radio" name="sort" value="high-low" />
+                Price: High to Low
+            </label>
+        </div>
+
+        <div class="section">
+            <h4>Filter By</h4>
+
+            <div class="filter-group">
+                <label>Color:</label>
+                <select name="color">
+                    <option value="all">All</option>
+                        @foreach(var item in Model)
+                            {
+                            var variants = item.Variants;
+
+                            @foreach(var variant in variants)
+                                {
+                                if (!colors.Contains(variant.Color))
+                                    {
+                                    <option value="@variant.Color">@StringHelper.CapitalizeEachWord(variant.Color)</option>
+
+                                    }
+                                colors.Add(variant.Color);
+                                }
+
+                            }
+                    </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Brand:</label>
+                <select name="brand">
+                    <option value="all">All</option>
+                        @foreach (var item in Model)
+                            {
+                            var brand = item.Brand.BrandName;
+
+                                if (!brands.Contains(brand))
+                                    {
+                                    <option value="brand">@StringHelper.CapitalizeEachWord(brand)</option>
+
+                                    }
+                                brands.Add(brand);
+
+                            }
+                    </select>
+            </div>
+
+            <div class="filter-group">
+                    <label>Price Range: <span id="price-range-display">₹100 - ₹5000</span></label>
+                    <input type="range" id="priceRange" min="100" max="5000" step="100" value="5000" oninput="updatePriceDisplay(this)">
+            </div>
+            <div class="filter-sort-btns">
+                <button class="clear-btn all" onclick="clearAll()">Clear Filters</button>
+                <button class="apply-btn all" onclick="handleApplyFilter()">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- PRODUCT LISTING-->
 
 <div id="search-result-feedback" style="display:none; width: 80%; margin: auto; margin-top: 20px;">
     <h2 id="search-result-feedback-content"></h2>

@@ -1,5 +1,6 @@
 using e_commerce_website.Database;
 using e_commerce_website.Models;
+using e_commerce_website.Models.product;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -105,5 +106,60 @@ public class ProductController : Controller
     public IActionResult Error()
         {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+    [HttpPost]
+    [Route("/api/product/filter")]
+    public async Task<IActionResult> FilterProducts([FromBody] Filter filterParams)
+        {
+        try
+            {
+            List<Product> products;
+
+            if (string.IsNullOrEmpty(filterParams.Category))
+                {
+                // If no category provided, return all products
+                products = await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .Include(p => p.Variants)
+                        .ThenInclude(v => v.Images)
+                    .ToListAsync();
+                if (!string.IsNullOrEmpty(filterParams.Sort))
+                    {
+                    if (filterParams.Sort.Equals("low-high"))
+                        {
+                        products = products.OrderBy(p => p.Variants.Min(v => v.Price)).ToList();
+
+                        }
+                    else
+                        {
+                        products = products.OrderByDescending(p => p.Variants.Max(v => v.Price)).ToList();
+                        }
+                    }
+                _logger.LogInformation($"Fetched all products. Count: {products.Count}");
+                }
+            else
+                {
+                // Filter products by category name
+                products = await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .Include(p => p.Variants)
+                        .ThenInclude(v => v.Images)
+                    .Where(p => p.Category.CategoryName == filterParams.Category)
+                    .ToListAsync();
+
+                _logger.LogInformation($"Fetched products for category '{filterParams.Category}'. Count: {products.Count}");
+                }
+
+            return PartialView("_ProductList", products);
+            }
+        catch (Exception ex)
+            {
+            _logger.LogError(ex, "Error fetching products in Index method.");
+            return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
     }

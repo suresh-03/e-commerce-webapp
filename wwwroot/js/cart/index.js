@@ -1,6 +1,4 @@
 ﻿$(document).ready(function () {
-  
-
     $('.qty-btn').on('click', function () {
         const $cartItem = $(this).closest('.cart-item');
         const cartId = $cartItem.data('cart-id');
@@ -38,3 +36,29 @@
         //});
     });
 });
+
+
+function removeCartItem() {
+
+    $("#remove-cart-btn").click(function (e) {
+
+        var button = $(this);
+        var variantId = button.data("variant-id");
+
+        $.ajax({
+            url: "/api/cart/remove",
+            type: "GET",
+            data: { variantId },
+            success: function (response) {
+                if (response.success) { 
+                    window.location.reload();
+                } else {
+                    alert("Failed to remove item from cart.");
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+}

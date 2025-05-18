@@ -117,3 +117,105 @@
 	height: 100%;
 	border-radius: 5px;
 }
+
+/* DROP DOWN MENU STYLE*/
+
+.top-right-container {
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+	margin: 1rem;
+}
+
+.dropdown-toggle {
+	background-color: #e9e9e9;
+	color: #222;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+	.dropdown-toggle:hover {
+		background-color: #f1f1f1;
+	}
+
+.dropdown-menu {
+	position: absolute;
+	top: 110%;
+	right: 0;
+	z-index: 100;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	width: 260px;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	padding: 1rem;
+}
+
+.hidden {
+	display: none;
+}
+
+.section {
+	margin-bottom: 1rem;
+}
+
+	.section h4 {
+		margin-bottom: 0.5rem;
+		font-size: 1.1rem;
+		color: #333;
+	}
+
+	.section label {
+		display: block;
+		margin-bottom: 0.4rem;
+		color: #555;
+		font-size: 0.95rem;
+	}
+
+.filter-group {
+	margin-bottom: 0.8rem;
+}
+
+	.filter-group label {
+		display: block;
+		margin-bottom: 0.3rem;
+		font-weight: 500;
+	}
+
+	.filter-group select, .filter-group input[type="range"] {
+		width: 100%;
+		padding: 6px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+	}
+
+
+.filter-sort-btns {
+    display: flex;
+	justify-content: space-evenly;
+}
+
+.clear-btn,
+.apply-btn{
+	margin-top: 0.5rem;
+	background-color: #eee;
+	border: 1px solid black;
+	padding: 6px 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.85rem;
+	color: #444;
+}
+
+
+

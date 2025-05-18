@@ -70,7 +70,7 @@ function handleSearch(api) {
             type: "GET",
             data: { query }, // Send the search query to the server
             success: function (partialViewResult) {
-                $("main").html(partialViewResult); // Replace the body with the partial view result
+                $("main").html(partialViewResult); // Replace the main with the partial view result
                 $("#search-result-feedback").css("display", "block");
                 $("#search-result-feedback-content").text("Search results for \"" + rawQuery +"\"");
             },
