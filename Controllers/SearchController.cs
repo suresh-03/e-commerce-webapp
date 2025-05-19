@@ -2,6 +2,7 @@
 using e_commerce_website.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Concurrent;
 
 namespace e_commerce_website.Controllers
     {
@@ -51,27 +52,27 @@ namespace e_commerce_website.Controllers
         private List<Product> GetMatchedProducts(string query, List<Product> products)
             {
             string[] tokens = query.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            List<Product> matchedProducts = new();
+            ConcurrentBag<Product> matchedProducts = new ConcurrentBag<Product>();
 
-            foreach (var product in products)
+            Parallel.ForEach(products, new ParallelOptions() { MaxDegreeOfParallelism = 6 }, product =>
                 {
-                int matchCount = 0;
-                foreach (var token in tokens)
-                    {
-                    if (ProductMatch(product, token))
+                    int matchCount = 0;
+                    foreach (var token in tokens)
                         {
-                        matchCount++;
+                        if (ProductMatch(product, token))
+                            {
+                            matchCount++;
+                            }
                         }
-                    }
 
-                double matchPercentage = (double)matchCount / tokens.Length * 100;
-                if (matchPercentage >= 75)
-                    {
-                    matchedProducts.Add(product);
-                    }
-                }
+                    double matchPercentage = (double)matchCount / tokens.Length * 100;
+                    if (matchPercentage >= 75)
+                        {
+                        matchedProducts.Add(product);
+                        }
+                });
 
-            return matchedProducts;
+            return matchedProducts.ToList();
             }
 
         private bool ProductMatch(Product product, string token)

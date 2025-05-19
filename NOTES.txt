@@ -3,3 +3,10 @@ colors:
 	secondary: #222 (darkgrey)
 	start color: #f7e816
 	favorite color: #ff527b
+
+
+Parallel functionality added components:
+	CategoryMenuViewComponent.cs
+	SearchController.cs
+	_ProductList.cshtml
+	ProductController.cs

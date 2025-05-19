@@ -89,7 +89,7 @@ namespace e_commerce_website.Controllers
                     UserID = userId
                     };
 
-                _context.Carts.Add(cart);          // Also add to context to ensure EF tracks it
+                await _context.Carts.AddAsync(cart);          // Also add to context to ensure EF tracks it
 
                 await _context.SaveChangesAsync();
 
@@ -120,7 +120,8 @@ namespace e_commerce_website.Controllers
                         .Where(cart => cart.VariantID == variantId && cart.UserID == userId).Select(cart => cart).FirstOrDefaultAsync();
                 if (cartItem != null)
                     {
-                    _context.Carts.Remove(cartItem);
+                    cartItem.IsDeleted = true;
+                    cartItem.DeletedAt = DateTime.UtcNow;
                     await _context.SaveChangesAsync();
                     }
                 _logger.LogInformation($"Product variant {variantId} removed from cart for user {userId}.");

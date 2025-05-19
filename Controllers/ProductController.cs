@@ -161,27 +161,34 @@ public class ProductController : Controller
 
     private List<Product> FilterProducts(List<Product> products, Filter filterParams)
         {
+        var filteredProducts = products.AsParallel().WithDegreeOfParallelism(6);
+
+        if (!filterParams.Color.Equals("all"))
+            {
+            filteredProducts = filteredProducts.Where(p => p.Variants.Any(v => v.Color == filterParams.Color));
+            }
+        if (!filterParams.Brand.Equals("all"))
+            {
+            filteredProducts = filteredProducts.Where(p => p.Brand.BrandName == filterParams.Brand);
+            }
+        filteredProducts = filteredProducts.Where(p => p.Variants.Any(v => v.Price >= filterParams.MinPrice && v.Price <= filterParams.MaxPrice));
+
+        var filteredList = filteredProducts.ToList();
+
         if (!string.IsNullOrEmpty(filterParams.Sort))
             {
             if (filterParams.Sort.Equals("low-high"))
                 {
-                products = products.OrderBy(p => p.Variants.Min(v => v.Price)).ToList();
+                filteredList = filteredList.OrderBy(p => p.Variants.Min(v => v.Price)).ToList();
                 }
             else
                 {
-                products = products.OrderByDescending(p => p.Variants.Max(v => v.Price)).ToList();
+                filteredList = filteredList.OrderByDescending(p => p.Variants.Max(v => v.Price)).ToList();
                 }
             }
-        if (!filterParams.Color.Equals("all"))
-            {
-            products = products.Where(products => products.Variants.Any(v => v.Color == filterParams.Color)).ToList();
-            }
-        if (!filterParams.Brand.Equals("all"))
-            {
-            products = products.Where(products => products.Brand.BrandName == filterParams.Brand).ToList();
-            }
-        products = products.Where(products => products.Variants.Any(v => v.Price >= filterParams.MinPrice && v.Price <= filterParams.MaxPrice)).ToList();
-        return products;
+
+        return filteredList;
+
         }
     }
 

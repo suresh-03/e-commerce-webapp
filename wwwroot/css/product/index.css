@@ -130,6 +130,20 @@
 
 }
 
+.clear-filter {
+    margin-top: 1rem;
+}
+
+	.clear-filter button {
+		background-color: white;
+		color: tomato;
+		padding: 10px 16px;
+		border: 1px solid tomato;
+		border-radius: 6px;
+		cursor: pointer;
+		font-size: 1rem;
+	}
+
 
 .dropdown {
 	position: relative;
@@ -208,7 +222,7 @@
 	justify-content: space-evenly;
 }
 
-.clear-btn,
+
 .apply-btn{
 	margin-top: 0.5rem;
 	background-color: #eee;

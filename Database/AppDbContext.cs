@@ -34,7 +34,13 @@ namespace e_commerce_website.Database
             // Brand Model Configuration
             modelBuilder.Entity<Brand>().HasIndex(b => b.BrandName).IsUnique();
 
-            modelBuilder.Entity<Cart>().HasIndex(c => new { c.UserID, c.VariantID }).IsUnique();
+
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.HasIndex(c => new { c.UserID, c.VariantID }).IsUnique();
+                entity.HasQueryFilter(c => !c.IsDeleted); // Soft delete filter
+            });
+
 
             modelBuilder.Entity<Category>().HasIndex(c => new { c.CategoryName, c.ParentCategoryID }).IsUnique();
 

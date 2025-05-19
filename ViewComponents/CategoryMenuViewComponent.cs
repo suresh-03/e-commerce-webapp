@@ -32,11 +32,14 @@ namespace e_commerce_website.ViewComponents
                     .ToListAsync();
 
                 var categoriesDictionary = categoriesDb
-                    .GroupBy(c => c.ParentCategoryID) // Safe to use .Value since nulls are filtered
-                    .ToDictionary(
-                        g => ((GenderType)g.Key).ToString(),
-                        g => g.Select(c => c.CategoryName).ToList()
-                    );
+                  .AsParallel()
+                  .WithDegreeOfParallelism(4)
+                  .GroupBy(c => c.ParentCategoryID)
+                  .ToDictionary(
+                      g => ((GenderType)g.Key).ToString(),
+                      g => g.Select(c => c.CategoryName).ToList()
+                  );
+
                 _logger.LogInformation(JsonHelper.AsJsonString(categoriesDictionary));
                 return View(categoriesDictionary);
                 }
