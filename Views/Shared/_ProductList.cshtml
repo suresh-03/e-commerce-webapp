@@ -2,8 +2,24 @@
 @using e_commerce_website.Helpers
 
 @{
-    var colors = Model.AsParallel().WithDegreeOfParallelism(6).SelectMany(p => p.Variants.Select(v => v.Color)).Distinct();
-    var brands = Model.AsParallel().WithDegreeOfParallelism(6).Select(p => p.Brand.BrandName).Distinct();
+    var colors = Model.AsParallel().SelectMany(p => p.Variants.Select(v => v.Color)).Distinct();
+    var brands = Model.AsParallel().Select(p => p.Brand.BrandName).Distinct();
+    // DEBUG START
+    // var colors = Model
+    //  .AsParallel()
+    //  .SelectMany(p =>
+    //  {
+    //      Console.WriteLine($"_ProductList p {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.Name}");
+
+    //      return p.Variants.Select(v =>
+    //      {
+    //          Console.WriteLine($"_ProductList v {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.Name}");
+    //          return v.Color;
+    //      });
+    //  })
+    //  .Distinct();
+    // DEBUG END
+
 }
 
 @functions {

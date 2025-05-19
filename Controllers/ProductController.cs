@@ -161,7 +161,7 @@ public class ProductController : Controller
 
     private List<Product> FilterProducts(List<Product> products, Filter filterParams)
         {
-        var filteredProducts = products.AsParallel().WithDegreeOfParallelism(6);
+        var filteredProducts = products.AsParallel();
 
         if (!filterParams.Color.Equals("all"))
             {

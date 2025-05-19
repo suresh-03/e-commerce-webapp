@@ -54,7 +54,7 @@ namespace e_commerce_website.Controllers
             string[] tokens = query.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             ConcurrentBag<Product> matchedProducts = new ConcurrentBag<Product>();
 
-            Parallel.ForEach(products, new ParallelOptions() { MaxDegreeOfParallelism = 6 }, product =>
+            Parallel.ForEach(products, product =>
                 {
                     int matchCount = 0;
                     foreach (var token in tokens)
@@ -70,6 +70,8 @@ namespace e_commerce_website.Controllers
                         {
                         matchedProducts.Add(product);
                         }
+                    // DEBUG
+                    //Console.WriteLine($"Search Controller {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.Name}");
                 });
 
             return matchedProducts.ToList();
