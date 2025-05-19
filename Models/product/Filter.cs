@@ -9,8 +9,8 @@
 
         public string Brand { get; set; } = string.Empty;
 
-        public double MinPrice { get; set; } = 100;
+        public decimal MinPrice { get; set; } = 100;
 
-        public double MaxPrice { get; set; } = 5000;
+        public decimal MaxPrice { get; set; } = 5000;
         }
     }

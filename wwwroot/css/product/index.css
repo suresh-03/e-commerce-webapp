@@ -48,12 +48,15 @@
 }
 
 
-.product-container .product-inner-container .product-grid{
-	height: 95%;
-	width: 13rem;
-	min-height: 22rem;
-	min-width: 13rem;
-	transition: box-shadow 0.3s ease;
+.product-container .product-inner-container .product-grid {
+    height: 95%;
+    width: 13rem;
+    min-height: 22rem;
+    max-height: 22rem;
+    min-width: 13rem;
+    max-width: 13rem;
+    transition: box-shadow 0.3s ease;
+	border-radius: 5px;
 }
 
 .product-container .product-inner-container .product-grid:hover{

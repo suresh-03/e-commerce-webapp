@@ -113,6 +113,7 @@ public class ProductController : Controller
     [Route("/api/product/filter")]
     public async Task<IActionResult> FilterProducts([FromBody] Filter filterParams)
         {
+        ViewData["Filter"] = "filter";
         try
             {
             List<Product> products;
@@ -126,20 +127,12 @@ public class ProductController : Controller
                     .Include(p => p.Variants)
                         .ThenInclude(v => v.Images)
                     .ToListAsync();
-                if (!string.IsNullOrEmpty(filterParams.Sort))
-                    {
-                    if (filterParams.Sort.Equals("low-high"))
-                        {
-                        products = products.OrderBy(p => p.Variants.Min(v => v.Price)).ToList();
 
-                        }
-                    else
-                        {
-                        products = products.OrderByDescending(p => p.Variants.Max(v => v.Price)).ToList();
-                        }
-                    }
+                products = FilterProducts(products, filterParams);
+
                 _logger.LogInformation($"Fetched all products. Count: {products.Count}");
                 }
+
             else
                 {
                 // Filter products by category name
@@ -150,6 +143,8 @@ public class ProductController : Controller
                         .ThenInclude(v => v.Images)
                     .Where(p => p.Category.CategoryName == filterParams.Category)
                     .ToListAsync();
+
+                products = FilterProducts(products, filterParams);
 
                 _logger.LogInformation($"Fetched products for category '{filterParams.Category}'. Count: {products.Count}");
                 }
@@ -162,4 +157,31 @@ public class ProductController : Controller
             return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
+
+
+    private List<Product> FilterProducts(List<Product> products, Filter filterParams)
+        {
+        if (!string.IsNullOrEmpty(filterParams.Sort))
+            {
+            if (filterParams.Sort.Equals("low-high"))
+                {
+                products = products.OrderBy(p => p.Variants.Min(v => v.Price)).ToList();
+                }
+            else
+                {
+                products = products.OrderByDescending(p => p.Variants.Max(v => v.Price)).ToList();
+                }
+            }
+        if (!filterParams.Color.Equals("all"))
+            {
+            products = products.Where(products => products.Variants.Any(v => v.Color == filterParams.Color)).ToList();
+            }
+        if (!filterParams.Brand.Equals("all"))
+            {
+            products = products.Where(products => products.Brand.BrandName == filterParams.Brand).ToList();
+            }
+        products = products.Where(products => products.Variants.Any(v => v.Price >= filterParams.MinPrice && v.Price <= filterParams.MaxPrice)).ToList();
+        return products;
+        }
     }
+

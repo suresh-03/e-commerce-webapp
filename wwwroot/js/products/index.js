@@ -47,12 +47,13 @@ function clearSelection(name) {
 
 
 
-function clearAll() {
+function clearAll(api) {
     clearSelection("sort");
     clearSelection("color");
     clearSelection("category");
     clearSelection("brand");
     clearPrice();
+    window.location.reload();
 }
 
 
@@ -73,7 +74,6 @@ function handleApplyFilter() {
         maxPrice
     }
 
-    alert(JSON.stringify(bodyData));
 
     $.ajax({
         url: "/api/product/filter",
