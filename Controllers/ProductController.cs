@@ -161,11 +161,23 @@ public class ProductController : Controller
 
     private List<Product> FilterProducts(List<Product> products, Filter filterParams)
         {
+        // DEBUG
+        //var filteredProducts = products.AsEnumerable();
+
         var filteredProducts = products.AsParallel();
 
         if (!filterParams.Color.Equals("all"))
             {
+
             filteredProducts = filteredProducts.Where(p => p.Variants.Any(v => v.Color == filterParams.Color));
+
+            // DEBUG
+            //filteredProducts = filteredProducts.Where(p =>
+            //{
+            //    Console.WriteLine($"Color Filter {p.ProductName} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.Name}");
+            //    return p.Variants.Any(v => v.Color == filterParams.Color);
+            //});
+
             }
         if (!filterParams.Brand.Equals("all"))
             {
